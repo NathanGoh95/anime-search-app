@@ -9,12 +9,15 @@ const Cards: React.FC<CardsProps> = ({ image, title }) => {
   return (
     <Card
       sx={{
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
         backgroundColor: 'transparent',
         border: '1px solid rgba(255, 255, 255, 0.5)',
         borderRadius: '8px',
         position: 'relative',
       }}>
-      <CardMedia component='img' height='140' image={image} alt={title} sx={{ borderRadius: '8px 8px 0 0' }} />
+      <CardMedia component='img' image={image} alt={title} />
       <CardContent>
         <Typography variant='h6' component='div'>
           {title}
