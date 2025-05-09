@@ -1,10 +1,10 @@
 import { API_BASE_URL, ENDPOINTS, DEFAULT_SEARCH_PARAMS } from '../constants/api';
-import type { AnimeSearchParams, AnimeSearchResponse, Anime } from '../types/anime';
+import type { AnimeSearchParams, Anime, AnimeResponse } from '../types/anime';
 
 const createAnimeService = () => {
   const baseUrl = API_BASE_URL;
 
-  const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 5000) => {
+  const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 2000) => {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
 
@@ -41,7 +41,12 @@ const createAnimeService = () => {
   };
 
   return {
-    searchAnime: async (params: AnimeSearchParams = {}): Promise<AnimeSearchResponse> => {
+    getAnimeList: async (page: number = 1, limit: number = 20): Promise<AnimeResponse> => {
+      const url = buildUrl(ENDPOINTS.ANIME_LIST, { page, limit });
+      return fetchWithTimeout(url);
+    },
+
+    searchAnime: async (params: AnimeSearchParams = {}): Promise<AnimeResponse> => {
       const searchParams = {
         ...DEFAULT_SEARCH_PARAMS,
         ...params,

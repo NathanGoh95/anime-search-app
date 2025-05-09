@@ -1,6 +1,7 @@
 export const API_BASE_URL = 'https://api.jikan.moe/v4';
 
 export const ENDPOINTS = {
+  ANIME_LIST: '/anime',
   ANIME_SEARCH: '/anime',
   ANIME_DETAILS: '/anime/:id',
   ANIME_RECOMMENDATIONS: '/anime/:id/recommendations',
