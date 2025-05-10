@@ -3,7 +3,7 @@ import { apiService } from './services/apiService';
 import type { Anime } from './types/anime';
 import Cards from './components/card';
 import './App.css';
-import SearchBar from './components/searchbar';
+import TopBar from './components/topbar';
 
 function App() {
   const [anime, setAnime] = useState<Anime[] | null>(null);
@@ -51,15 +51,14 @@ function App() {
 
   return (
     <div className='app'>
-      <h1>Anime List</h1>
-      <SearchBar onSearch={handleSearch} />
-      {loading && <p>Loading...</p>}
-      {error && <p className='error'>{error}</p>}
-      <div className='anime-grid'>
+      <TopBar onSearch={handleSearch} />
+      {/* {loading && <p>Loading...</p>}
+      {error && <p className='error'>{error}</p>} */}
+      {/* <div className='anime-grid'>
         {anime?.map((item) => (
           <Cards key={item.mal_id} image={item.images.jpg.image_url} title={item.title} />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
