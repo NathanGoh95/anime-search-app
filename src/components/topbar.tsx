@@ -8,11 +8,17 @@ interface TopBarProps {
 
 const TopBar: React.FC<TopBarProps> = ({ onSearch }) => {
   return (
-    <AppBar position='fixed' sx={{ backgroundColor: 'transparent', }}>
+    <AppBar
+      position='static'
+      sx={{
+        backgroundColor: 'transparent',
+        boxShadow: 0,
+        width: '100%',
+      }}>
       <Toolbar
         sx={{
-          height: '64px',
-          px: '40px',
+          height: '64px', // Using pixel value for consistency (4rem)
+          px: '2.5rem',
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'flex-start',
