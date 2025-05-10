@@ -6,6 +6,7 @@ import TopBar from './components/topbar';
 import { Box, Typography } from '@mui/material';
 import HomePage from './pages/homepage';
 import Spinner from './components/spinner';
+import AppRoutes from './routes/routes';
 
 function App() {
   const [anime, setAnime] = useState<Anime[] | null>(null);
@@ -62,6 +63,16 @@ function App() {
     setCurrentPage(page);
   };
 
+  const animeData = {
+    anime,
+    totalPages,
+    currentPage,
+    onPageChange: handlePageChange,
+    totalItems,
+    loading,
+    error,
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <Box sx={{ height: '64px' }}>
@@ -82,13 +93,7 @@ function App() {
             <Typography color='error' variant='h6' align='center' sx={{ mt: 4 }}>
               {error}
             </Typography>
-            <HomePage
-              anime={anime}
-              totalPages={totalPages}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-              totalItems={totalItems}
-            />
+            <AppRoutes animeData={animeData} />
           </>
         )}
       </Box>

@@ -16,7 +16,7 @@ const Cards: React.FC<CardsProps> = ({ image, title }) => {
         position: 'relative',
         boxShadow: 0,
         borderRadius: 0,
-        width: '225px', // Fixed width for consistency
+        width: '225px',
       }}>
       <CardMedia
         component='img'
@@ -29,7 +29,7 @@ const Cards: React.FC<CardsProps> = ({ image, title }) => {
         }}
       />
       <CardContent>
-        <Typography variant='subtitle2' component='div' sx={{ height: '25px'}}>
+        <Typography variant='subtitle2' component='div' sx={{ height: '25px', textAlign: 'center' }}>
           {title}
         </Typography>
       </CardContent>
