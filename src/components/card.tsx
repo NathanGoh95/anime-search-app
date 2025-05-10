@@ -13,13 +13,23 @@ const Cards: React.FC<CardsProps> = ({ image, title }) => {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'transparent',
-        border: '1px solid rgba(255, 255, 255, 0.5)',
-        borderRadius: '8px',
         position: 'relative',
+        boxShadow: 0,
+        borderRadius: 0,
+        width: '225px',
       }}>
-      <CardMedia component='img' image={image} alt={title} />
+      <CardMedia
+        component='img'
+        image={image}
+        alt={title}
+        sx={{
+          height: '325px',
+          objectFit: 'cover',
+          borderRadius: '0.5rem',
+        }}
+      />
       <CardContent>
-        <Typography variant='h6' component='div'>
+        <Typography variant='subtitle2' component='div' sx={{ height: '25px', textAlign: 'center' }}>
           {title}
         </Typography>
       </CardContent>

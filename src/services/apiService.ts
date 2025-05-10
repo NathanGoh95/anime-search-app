@@ -1,5 +1,5 @@
-import { API_BASE_URL, ENDPOINTS, DEFAULT_SEARCH_PARAMS } from '../constants/api';
-import type { AnimeSearchParams, Anime, AnimeResponse } from '../types/anime';
+import { API_BASE_URL, ENDPOINTS, DEFAULT_SEARCH_PARAMS } from './constants/api';
+import type { AnimeSearchParams, Anime, AnimeResponse } from './types/anime';
 
 const createApiService = () => {
   const baseUrl = API_BASE_URL;
