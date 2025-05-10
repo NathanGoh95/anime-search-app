@@ -1,7 +1,7 @@
 import { API_BASE_URL, ENDPOINTS, DEFAULT_SEARCH_PARAMS } from '../constants/api';
 import type { AnimeSearchParams, Anime, AnimeResponse } from '../types/anime';
 
-const createAnimeService = () => {
+const createApiService = () => {
   const baseUrl = API_BASE_URL;
 
   const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout = 2000) => {
@@ -79,4 +79,4 @@ const createAnimeService = () => {
 };
 
 // Create a singleton instance
-export const animeService = createAnimeService();
+export const apiService = createApiService();
