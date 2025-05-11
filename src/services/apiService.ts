@@ -61,11 +61,6 @@ const createApiService = () => {
       return fetchWithTimeout(url);
     },
 
-    getAnimeRecommendations: async (id: number) => {
-      const url = buildUrl(ENDPOINTS.ANIME_RECOMMENDATIONS.replace(':id', String(id)));
-      return fetchWithTimeout(url);
-    },
-
     getAnimeReviews: async (id: number) => {
       const url = buildUrl(ENDPOINTS.ANIME_REVIEWS.replace(':id', String(id)));
       return fetchWithTimeout(url);

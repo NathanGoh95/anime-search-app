@@ -9,10 +9,11 @@ import {
   ClickAwayListener,
   Paper,
   Popper,
+  Typography,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Clear } from '@mui/icons-material';
-import { apiService } from '../services/apiService'; // Import your API service
+import { apiService } from '../services/apiService';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface SearchBarProps {
@@ -26,9 +27,10 @@ const SearchBar: React.FC<SearchBarProps> = () => {
 
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState(query);
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<{ id: number; title: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [noResults, setNoResults] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -42,20 +44,28 @@ const SearchBar: React.FC<SearchBarProps> = () => {
     if (debouncedQuery) {
       setLoading(true);
       apiService
-        .searchAnime({ q: debouncedQuery, limit: 5 })
+        .searchAnime({ q: debouncedQuery, limit: 15 })
         .then((response) => {
-          setSuggestions(response.data.map((item) => item.title));
+          if (response.data.length === 0) {
+            setNoResults(true);
+            setSuggestions([]);
+          } else {
+            setNoResults(false);
+            setSuggestions(response.data.map((item) => ({ id: item.mal_id, title: item.title })));
+          }
           const input = document.getElementById('search-input');
           if (input) setAnchorEl(input);
         })
         .catch(() => {
           setSuggestions([]);
+          setNoResults(true);
         })
         .finally(() => {
           setLoading(false);
         });
     } else {
       setSuggestions([]);
+      setNoResults(false);
       setAnchorEl(null);
     }
   }, [debouncedQuery]);
@@ -64,29 +74,20 @@ const SearchBar: React.FC<SearchBarProps> = () => {
     setQuery('');
     setSuggestions([]);
     setAnchorEl(null);
-    // Navigate back to homepage when search is cleared
     navigate('/homepage/1');
   };
 
   const handleSearch = () => {
     if (query.trim()) {
-      // Update URL with search parameters
       navigate(`/homepage/1?keyword=${encodeURIComponent(query.trim())}`);
-
-      // Close suggestions
       setSuggestions([]);
       setAnchorEl(null);
     }
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setQuery(suggestion);
-    // Use setTimeout to allow state update before search
-    setTimeout(() => {
-      // onSearch(suggestion);
-      navigate(`/homepage/1?keyword=${encodeURIComponent(suggestion)}`);
-      setAnchorEl(null);
-    }, 0);
+  const handleSuggestionClick = (suggestion: { id: number; title: string }) => {
+    setQuery('');
+    navigate(`/anime/${suggestion.id}`);
   };
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
@@ -111,7 +112,6 @@ const SearchBar: React.FC<SearchBarProps> = () => {
     };
   }, [anchorEl]);
 
-  // Initialize query from URL when component mounts
   useEffect(() => {
     if (initialQuery) {
       setQuery(initialQuery);
@@ -141,7 +141,7 @@ const SearchBar: React.FC<SearchBarProps> = () => {
             paddingRight: '0.75rem',
             '& fieldset': { borderColor: 'transparent' },
             '&:hover fieldset': { borderColor: 'transparent' },
-            '&.Mui-focused fieldset': { borderColor: '#1A76D2' },
+            '&.Mui-focused fieldset': { borderColor: 'transparent' },
           },
           '& .MuiInputBase-input': {
             padding: 0,
@@ -193,7 +193,7 @@ const SearchBar: React.FC<SearchBarProps> = () => {
       />
 
       <Popper
-        open={Boolean(anchorEl) && suggestions.length > 0}
+        open={Boolean(anchorEl) && (suggestions.length > 0 || noResults)}
         anchorEl={anchorEl}
         placement='bottom-start'
         sx={{ zIndex: 1100 }}
@@ -202,20 +202,24 @@ const SearchBar: React.FC<SearchBarProps> = () => {
           <Paper
             elevation={3}
             sx={{
-              maxHeight: '200px',
+              maxHeight: '250px',
               overflowY: 'auto',
-              width: '30rem',
+              width: '45rem',
               borderRadius: '8px',
               backgroundColor: '#fff',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
             }}>
-            <Box padding='10px'>
+            <Box>
               {loading ? (
                 <CircularProgress size={24} />
+              ) : noResults ? (
+                <Typography variant='body2' sx={{ p: 2, textAlign: 'center' }}>
+                  No search results found
+                </Typography>
               ) : (
                 suggestions.map((suggestion, index) => (
                   <MenuItem key={index} onClick={() => handleSuggestionClick(suggestion)}>
-                    {suggestion}
+                    {suggestion.title}
                   </MenuItem>
                 ))
               )}

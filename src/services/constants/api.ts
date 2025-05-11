@@ -4,7 +4,6 @@ export const ENDPOINTS = {
   ANIME_LIST: '/anime',
   ANIME_SEARCH: '/anime',
   ANIME_DETAILS: '/anime/:id',
-  ANIME_RECOMMENDATIONS: '/anime/:id/recommendations',
   ANIME_REVIEWS: '/anime/:id/reviews',
   ANIME_CHARACTERS: '/anime/:id/characters',
 } as const;
