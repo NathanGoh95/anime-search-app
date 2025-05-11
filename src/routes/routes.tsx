@@ -7,13 +7,12 @@ interface AppRoutesProps {
     anime: Anime[] | null;
     totalPages: number;
     currentPage: number;
-    onPageChange: (page: number) => void;
     totalItems: number;
   };
 }
 
 const AppRoutes = ({ animeData }: AppRoutesProps) => {
-  const { anime, totalPages, currentPage, onPageChange, totalItems } = animeData;
+  const { anime, totalPages, currentPage, totalItems } = animeData;
 
   return (
     <Routes>
@@ -25,7 +24,6 @@ const AppRoutes = ({ animeData }: AppRoutesProps) => {
             anime={anime}
             totalPages={totalPages}
             currentPage={currentPage}
-            onPageChange={onPageChange}
             totalItems={totalItems}
           />
         }
