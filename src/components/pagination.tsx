@@ -14,7 +14,7 @@ const Paginate: React.FC<PaginateProps> = ({ count, page, onPageChange, totalIte
   const end = Math.min(page * itemsPerPage, totalItems);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pt: 3 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pt: { xs: 0, sm: 3 } }}>
       <Pagination
         count={count}
         page={page}

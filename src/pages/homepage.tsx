@@ -22,7 +22,7 @@ const HomePage: React.FC<HomePageProps> = ({ anime, totalPages, currentPage, tot
   };
 
   return (
-    <Box sx={{ py: 2, px: '18rem' }}>
+    <Box sx={{ py: 2, px: { xs: 0, sm: '18rem'} }}>
       <Typography variant='h5' sx={{ mb: 2, textAlign: 'center', color: 'white' }}>
         {keyword ? `Search results for "${keyword}"` : ''}
       </Typography>

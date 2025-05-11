@@ -28,21 +28,22 @@ const AnimeDetails: React.FC<AnimeDetailsProps> = ({ anime, characters }) => {
   };
 
   return (
-    <Container maxWidth='lg'>
+    <Container maxWidth='lg' sx={{ py: 2 }}>
       {/* Back Button */}
-      <Button
-        variant='text'
-        onClick={handleBack}
-        sx={{
-          backgroundColor: '#222', // Current background color
-          color: 'white',
-          mb: 2,
-          '&:hover': {
-            backgroundColor: '#333', // Slightly lighter color on hover
-          },
-        }}>
-        BACK
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' }, mb: 2 }}>
+        <Button
+          variant='text'
+          onClick={handleBack}
+          sx={{
+            backgroundColor: '#222', // Current background color
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#333', // Slightly lighter color on hover
+            },
+          }}>
+          BACK
+        </Button>
+      </Box>
 
       {/* Anime Title Header */}
       <Paper
@@ -54,6 +55,8 @@ const AnimeDetails: React.FC<AnimeDetailsProps> = ({ anime, characters }) => {
           px: 3,
           mb: 2,
           borderRadius: 1,
+          display: 'flex',
+          justifyContent: { xs: 'center', sm: 'flex-start' },
         }}>
         <Typography variant='h5' fontWeight='bold'>
           {anime?.title}
@@ -71,8 +74,11 @@ const AnimeDetails: React.FC<AnimeDetailsProps> = ({ anime, characters }) => {
         }}>
         <Grid container spacing={2}>
           {/* Left Column - Anime Image */}
-          <Grid sx={{ width: '25%' }}>
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+          {/* <Grid sx={{ width: '25%' }}> */}
+          <Grid
+            columns={{ xs: 12, sm: 3 }}
+            sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' }, alignItems: 'center' }}>
+            <Box sx={{ minWidth: 120, width: '100%', maxWidth: 200 }}>
               {/* Anime Image */}
               <Box sx={{ flex: 1, minWidth: 120 }}>
                 <CardMedia
@@ -91,18 +97,30 @@ const AnimeDetails: React.FC<AnimeDetailsProps> = ({ anime, characters }) => {
           </Grid>
 
           {/* Right Column - Alternative Titles & Information */}
-          <Grid sx={{ width: '72%' }}>
+          <Grid sx={{ width: { xs: '100%', sm: '72%' } }}>
             <Box sx={{ mb: 2 }}>
               <Typography variant='subtitle1' fontWeight='bold' sx={{ mb: 1, color: 'white' }}>
                 Alternative Titles
               </Typography>
               <Divider sx={{ mb: 1, backgroundColor: '#444' }} />
-              <Typography variant='body2' sx={{ color: '#aaa', mb: 0.5 }}>
-                Synonyms: {anime?.title_synonyms?.join(', ')}
-              </Typography>
-              <Typography variant='body2' sx={{ color: '#aaa', mb: 1 }}>
-                Japanese: {anime?.title_japanese}
-              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Box display={'flex'} gap={1} mb={1}>
+                  <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
+                    <Typography variant='body2'>Synonyms:</Typography>
+                  </Grid>
+                  <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
+                    <Typography variant='body2'>{anime?.title_synonyms?.join(', ')}</Typography>
+                  </Grid>
+                </Box>
+                <Box display={'flex'} gap={1} mb={1}>
+                  <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
+                    <Typography variant='body2'>Japanese:</Typography>
+                  </Grid>
+                  <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
+                    <Typography variant='body2'>{anime?.title_japanese}</Typography>
+                  </Grid>
+                </Box>
+              </Box>
             </Box>
 
             <Box>
@@ -111,33 +129,43 @@ const AnimeDetails: React.FC<AnimeDetailsProps> = ({ anime, characters }) => {
               </Typography>
               <Divider sx={{ mb: 1, backgroundColor: '#444' }} />
               <Grid container spacing={1}>
-                <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
-                  <Typography variant='body2'>Type:</Typography>
-                </Grid>
-                <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
-                  <Typography variant='body2'>TV</Typography>
-                </Grid>
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Box display={'flex'} gap={1} mb={1}>
+                    <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
+                      <Typography variant='body2'>Type:</Typography>
+                    </Grid>
+                    <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
+                      <Typography variant='body2'>{anime?.type}</Typography>
+                    </Grid>
+                  </Box>
 
-                <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
-                  <Typography variant='body2'>Episodes:</Typography>
-                </Grid>
-                <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
-                  <Typography variant='body2'>{anime?.episodes}</Typography>
-                </Grid>
+                  <Box display={'flex'} gap={1} mb={1}>
+                    <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
+                      <Typography variant='body2'>Episodes:</Typography>
+                    </Grid>
+                    <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
+                      <Typography variant='body2'>{anime?.episodes}</Typography>
+                    </Grid>
+                  </Box>
 
-                <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
-                  <Typography variant='body2'>Status:</Typography>
-                </Grid>
-                <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
-                  <Typography variant='body2'>{anime?.status}</Typography>
-                </Grid>
+                  <Box display={'flex'} gap={1} mb={1}>
+                    <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
+                      <Typography variant='body2'>Status:</Typography>
+                    </Grid>
+                    <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
+                      <Typography variant='body2'>{anime?.status}</Typography>
+                    </Grid>
+                  </Box>
 
-                <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
-                  <Typography variant='body2'>Aired:</Typography>
-                </Grid>
-                <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
-                  <Typography variant='body2'>{anime?.aired?.string}</Typography>
-                </Grid>
+                  <Box display={'flex'} gap={1} mb={1}>
+                    <Grid columns={{ xs: 4 }} sx={{ color: '#aaa' }}>
+                      <Typography variant='body2'>Aired:</Typography>
+                    </Grid>
+                    <Grid columns={{ xs: 8 }} sx={{ color: 'white' }}>
+                      <Typography variant='body2'>{anime?.aired?.string}</Typography>
+                    </Grid>
+                  </Box>
+                </Box>
               </Grid>
             </Box>
           </Grid>
@@ -159,7 +187,7 @@ const AnimeDetails: React.FC<AnimeDetailsProps> = ({ anime, characters }) => {
             </Typography>
             <Divider sx={{ mb: 3, backgroundColor: '#444' }} />
 
-            <Typography variant='body2' sx={{ color: '#ddd', mb: 4, lineHeight: 1.6 }}>
+            <Typography variant='body2' sx={{ color: '#ddd', mb: 4, lineHeight: 1.6 }} textAlign={'justify'}>
               {anime?.synopsis ||
                 'The city of Tokyo is plagued by a deadly phenomenon: spontaneous human combustion! Luckily, a special team is there to quench the inferno: The Fire Force! The third season continues to follow Shinra Kusakabe, a third generation pyrokinetic youth who gained the nickname "Devil\'s Footprints" for his ability to ignite his feet at will.'}
             </Typography>
@@ -207,7 +235,7 @@ const AnimeDetails: React.FC<AnimeDetailsProps> = ({ anime, characters }) => {
             sx={{
               p: 4, // Increased padding
               backgroundColor: '#222',
-              mb: 2,
+              mb: { xs: 4, sm: 2 },
             }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Typography variant='subtitle1' fontWeight='bold' sx={{ mb: 1, color: 'white' }}>

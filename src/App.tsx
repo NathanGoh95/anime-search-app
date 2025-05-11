@@ -31,7 +31,7 @@ function App() {
       setTotalItems(response.pagination.items.total || 0);
       setCurrentPage(page);
     } catch {
-      setError('Unable to retrieve anime list');
+      setError('Failed to retrieve anime list, please refresh and try again!');
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,7 @@ function App() {
       const charactersResponse = await apiService.getAnimeCharacters(id);
       setCharacters(charactersResponse.data);
     } catch {
-      setError('Failed to fetch anime details');
+      setError('Failed to retrieve anime details, please refresh and try again!');
     }
   };
 
@@ -68,7 +68,7 @@ function App() {
         setTotalItems(response.pagination.items.total || 0);
         setCurrentPage(page);
       } catch {
-        setError('Unable to retrieve search results');
+        setError('Failed to retrieve search results, please try to search again!');
       } finally {
         setLoading(false);
       }
@@ -113,16 +113,21 @@ function App() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#1F2937' }}>
-      <Box sx={{ height: '64px' }}>
+      <Box sx={{ height: { xs: '120px', sm: '64px' } }}>
         <TopBar onSearch={handleSearch} />
       </Box>
       <Box
         component='main'
         sx={{
           flexGrow: 1,
-          height: 'calc(100vh - 64px)',
+          height: { xs: 'calc(100vh - 120px)', sm: 'calc(100vh - 64px)' },
           overflowY: 'auto',
           width: '100%',
+          px: { xs: 0, sm: 0 },
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          mb: { xs: 9, sm: 0 },
         }}>
         {loading ? (
           <Spinner />

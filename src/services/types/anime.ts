@@ -31,6 +31,7 @@ export interface Anime {
   images: AnimeImages;
   synopsis: string;
   score: number;
+  type: string;
   rank: number;
   episodes: number;
   status: string;

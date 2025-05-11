@@ -20,21 +20,18 @@ const TopBar: React.FC<TopBarProps> = ({ onSearch }) => {
       }}>
       <Toolbar
         sx={{
-          height: '64px',
+          height: { xs: '120px', sm: '64px'},
           px: '2.5rem',
           display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
+          flexDirection: { xs: 'column', sm: 'row' },
+          justifyContent: { xs: 'center', sm: 'flex-start' },
           alignItems: 'center',
           gap: 2,
         }}>
-        <Typography
-          onClick={() => navigate('/homepage/1')}
-          variant='h6'
-          sx={{ color: 'white', mr: 2, cursor: 'pointer' }}>
+        <Typography onClick={() => navigate('/homepage/1')} variant='h6' sx={{ color: 'white', mr: 2, cursor: 'pointer' }}>
           Anime Search App
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center'}}>
           <SearchBar onSearch={onSearch}></SearchBar>
         </Box>
       </Toolbar>

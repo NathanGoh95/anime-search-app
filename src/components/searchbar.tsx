@@ -1,16 +1,6 @@
 import type React from 'react';
 import { useEffect, useState } from 'react';
-import {
-  InputAdornment,
-  TextField,
-  CircularProgress,
-  MenuItem,
-  Box,
-  ClickAwayListener,
-  Paper,
-  Popper,
-  Typography,
-} from '@mui/material';
+import { InputAdornment, TextField, CircularProgress, MenuItem, Box, ClickAwayListener, Paper, Popper, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { Clear } from '@mui/icons-material';
 import { apiService } from '../services/apiService';
@@ -128,6 +118,7 @@ const SearchBar: React.FC<SearchBarProps> = () => {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyPress}
+        autoComplete='off'
         sx={{
           backgroundColor: '#F4F5F7',
           height: '2.5rem',
@@ -204,21 +195,23 @@ const SearchBar: React.FC<SearchBarProps> = () => {
             sx={{
               maxHeight: '250px',
               overflowY: 'auto',
-              width: '45rem',
+              width: { xs: '18.75rem', sm: '35rem' },
               borderRadius: '8px',
               backgroundColor: '#fff',
               boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
             }}>
             <Box>
               {loading ? (
-                <CircularProgress size={24} />
+                <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '250px' }}>
+                  <CircularProgress size={24} />
+                </Box>
               ) : noResults ? (
-                <Typography variant='body2' sx={{ p: 2, textAlign: 'center' }}>
+                <Typography variant='body2' sx={{ p: 2, textAlign: 'center', fontSize: { xs: '0.75rem', sm: '1rem' } }}>
                   No search results found
                 </Typography>
               ) : (
                 suggestions.map((suggestion, index) => (
-                  <MenuItem key={index} onClick={() => handleSuggestionClick(suggestion)}>
+                  <MenuItem key={index} onClick={() => handleSuggestionClick(suggestion)} sx={{ fontSize: { xs: '0.75rem', sm: '1rem' } }}>
                     {suggestion.title}
                   </MenuItem>
                 ))
