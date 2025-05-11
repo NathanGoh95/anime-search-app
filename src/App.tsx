@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { apiService } from './services/apiService';
-import type { Anime } from './services/types/anime';
+import type { Anime, Daum } from './services/types/anime';
 import './App.css';
 import TopBar from './components/topbar';
 import { Box, Typography } from '@mui/material';
@@ -15,6 +15,8 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+  const [animeDetails, setAnimeDetails] = useState<Anime | null>(null);
+  const [characters, setCharacters] = useState<Daum[]>([]);
 
   const [searchParams] = useSearchParams();
   const location = useLocation();
@@ -34,6 +36,17 @@ function App() {
       setLoading(false);
     }
   }, []);
+
+  const fetchAnimeDetails = async (id: number) => {
+    try {
+      const response = await apiService.getAnimeDetails(id);
+      setAnimeDetails(response.data);
+      const charactersResponse = await apiService.getAnimeCharacters(id);
+      setCharacters(charactersResponse.data);
+    } catch {
+      setError('Failed to fetch anime details');
+    }
+  };
 
   const searchAnime = useCallback(
     async (query: string, page: number = 1) => {
@@ -73,6 +86,11 @@ function App() {
     } else {
       fetchAnimeList(urlPage);
     }
+
+    if (location.pathname.startsWith('/anime/')) {
+      const id = parseInt(pathParts[pathParts.length - 1], 10);
+      fetchAnimeDetails(id);
+    }
   }, [location.pathname, searchParams, fetchAnimeList, searchAnime]);
 
   const handleSearch = useCallback(
@@ -89,10 +107,12 @@ function App() {
     totalItems,
     loading,
     error,
+    animeDetails,
+    characters,
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', backgroundColor: '#1F2937' }}>
       <Box sx={{ height: '64px' }}>
         <TopBar onSearch={handleSearch} />
       </Box>
@@ -106,13 +126,14 @@ function App() {
         }}>
         {loading ? (
           <Spinner />
-        ) : (
-          <>
-            <Typography color='error' variant='h6' align='center' sx={{ mt: 4 }}>
+        ) : error ? (
+          <Box sx={{ textAlign: 'center', mt: 5 }}>
+            <Typography variant='h6' color='error'>
               {error}
             </Typography>
-            <AppRoutes animeData={animeData} />
-          </>
+          </Box>
+        ) : (
+          <AppRoutes animeData={animeData} />
         )}
       </Box>
     </Box>

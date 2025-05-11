@@ -22,8 +22,18 @@ const Paginate: React.FC<PaginateProps> = ({ count, page, onPageChange, totalIte
         color='primary'
         variant='outlined'
         shape='rounded'
+        sx={{
+          '& .MuiPaginationItem-root': {
+            color: 'white',
+            borderColor: 'white',
+          },
+          '& .Mui-selected': {
+            backgroundColor: 'white',
+            color: 'black',
+          },
+        }}
       />
-      <Typography variant='caption' sx={{ mt: 1 }}>
+      <Typography variant='caption' sx={{ mt: 1, color: 'white' }}>
         {totalItems > 0 ? `${start}-${end} of ${totalItems}` : 'No items found'}
       </Typography>
     </Box>

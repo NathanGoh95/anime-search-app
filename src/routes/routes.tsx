@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from '../pages/homepage';
-import type { Anime } from '../services/types/anime';
+import type { Anime, Daum } from '../services/types/anime';
+import AnimeDetails from '../pages/animeDetails';
 
 interface AppRoutesProps {
   animeData: {
@@ -8,30 +9,22 @@ interface AppRoutesProps {
     totalPages: number;
     currentPage: number;
     totalItems: number;
+    animeDetails: Anime | null;
+    characters: Daum[];
   };
 }
 
 const AppRoutes = ({ animeData }: AppRoutesProps) => {
-  const { anime, totalPages, currentPage, totalItems } = animeData;
+  const { anime, totalPages, currentPage, totalItems, animeDetails, characters } = animeData;
 
   return (
     <Routes>
       <Route path='/' element={<Navigate to='/homepage/1' replace />} />
       <Route
         path='/homepage/:page'
-        element={
-          <HomePage
-            anime={anime}
-            totalPages={totalPages}
-            currentPage={currentPage}
-            totalItems={totalItems}
-          />
-        }
+        element={<HomePage anime={anime} totalPages={totalPages} currentPage={currentPage} totalItems={totalItems} />}
       />
-      {/* Add future routes here, for example:
-      <Route path="/anime/:id" element={<AnimeDetailsPage />} />
-      <Route path="/favorites" element={<FavoritesPage />} />
-      */}
+      <Route path='/anime/:id' element={<AnimeDetails anime={animeDetails} characters={characters} />} />
       <Route path='*' element={<Navigate to='/homepage/1' replace />} />
     </Routes>
   );

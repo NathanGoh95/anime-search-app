@@ -3,7 +3,7 @@ import type { Anime } from '../services/types/anime';
 import { Box, Grid, Typography } from '@mui/material';
 import Cards from '../components/card';
 import Paginate from '../components/pagination';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 interface HomePageProps {
   anime: Anime[] | null;
@@ -17,9 +17,13 @@ const HomePage: React.FC<HomePageProps> = ({ anime, totalPages, currentPage, tot
   const keyword = searchParams.get('keyword');
   const navigate = useNavigate();
 
+  const handleCardClick = (id: number) => {
+    navigate(`/anime/${id}`); // Navigate to AnimeDetails page
+  };
+
   return (
     <Box sx={{ py: 2, px: '18rem' }}>
-      <Typography variant='h5' sx={{ mb: 2, textAlign: 'center' }}>
+      <Typography variant='h5' sx={{ mb: 2, textAlign: 'center', color: 'white' }}>
         {keyword ? `Search results for "${keyword}"` : ''}
       </Typography>
 
@@ -27,12 +31,16 @@ const HomePage: React.FC<HomePageProps> = ({ anime, totalPages, currentPage, tot
         {anime && anime.length > 0 ? (
           anime.map((item, index) => (
             <Grid key={index} sx={{ gridColumn: { xs: 'span 4', sm: 'span 4', md: 'span 4', lg: 'span 3' } }}>
-              <Cards image={item.images.jpg.image_url} title={item.title} />
+              <Cards
+                image={item.images.jpg.image_url}
+                title={item.title}
+                onClick={() => handleCardClick(item.mal_id)}
+              />
             </Grid>
           ))
         ) : (
           <Grid columns={{ xs: 12 }}>
-            <Typography variant='body1' align='center'>
+            <Typography variant='body1' align='center' sx={{ color: 'white' }}>
               {keyword ? 'No search results found' : 'No anime found'}
             </Typography>
           </Grid>
