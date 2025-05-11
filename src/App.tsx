@@ -4,9 +4,9 @@ import type { Anime } from './services/types/anime';
 import './App.css';
 import TopBar from './components/topbar';
 import { Box, Typography } from '@mui/material';
-import HomePage from './pages/homepage';
 import Spinner from './components/spinner';
 import AppRoutes from './routes/routes';
+import { useSearchParams, useLocation } from 'react-router-dom';
 
 function App() {
   const [anime, setAnime] = useState<Anime[] | null>(null);
@@ -16,6 +16,9 @@ function App() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
 
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
   const fetchAnimeList = useCallback(async (page: number) => {
     setLoading(true);
     setError(null);
@@ -24,6 +27,7 @@ function App() {
       setAnime(response.data);
       setTotalPages(response.pagination.last_visible_page);
       setTotalItems(response.pagination.items.total || 0);
+      setCurrentPage(page);
     } catch {
       setError('Unable to retrieve anime list');
     } finally {
@@ -31,43 +35,57 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    fetchAnimeList(currentPage);
-  }, [fetchAnimeList, currentPage]);
-
-  const handleSearch = useCallback(
-    async (query: string) => {
-      const trimmed = query.trim();
-      if (trimmed.length === 0) {
-        fetchAnimeList(currentPage);
+  const searchAnime = useCallback(
+    async (query: string, page: number = 1) => {
+      if (!query.trim()) {
+        fetchAnimeList(page);
         return;
       }
 
       setLoading(true);
       setError(null);
       try {
-        const response = await apiService.searchAnime({ q: trimmed, limit: 25 });
+        const response = await apiService.searchAnime({
+          q: query,
+          limit: 25,
+          page,
+        });
         setAnime(response.data);
-        setTotalPages(1);
-        setTotalItems(response.data.length);
+        setTotalPages(response.pagination.last_visible_page);
+        setTotalItems(response.pagination.items.total || 0);
+        setCurrentPage(page);
       } catch {
         setError('Unable to retrieve search results');
       } finally {
         setLoading(false);
       }
     },
-    [fetchAnimeList, currentPage],
+    [fetchAnimeList],
   );
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
+  useEffect(() => {
+    const keyword = searchParams.get('keyword');
+    const pathParts = location.pathname.split('/');
+    const urlPage = parseInt(pathParts[pathParts.length - 1] || '1', 10);
+
+    if (keyword) {
+      searchAnime(keyword, urlPage);
+    } else {
+      fetchAnimeList(urlPage);
+    }
+  }, [location.pathname, searchParams, fetchAnimeList, searchAnime]);
+
+  const handleSearch = useCallback(
+    (query: string) => {
+      searchAnime(query, 1);
+    },
+    [searchAnime],
+  );
 
   const animeData = {
     anime,
     totalPages,
     currentPage,
-    onPageChange: handlePageChange,
     totalItems,
     loading,
     error,
